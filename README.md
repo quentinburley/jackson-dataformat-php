@@ -14,6 +14,10 @@ Project is licensed under [Apache License 2.0](http://www.apache.org/licenses/LI
 
 ## Notes and Issues
 
+The PHP serialization format is very PHP-ish and reasonably so.  As a result
+the translation between Java and PHP is not entirely symmetrical. Below are
+some notes and issues with the translation.
+
 ### PHP Arrays
 
 PHP arrays are both arrays and hashtables which makes it difficult to
@@ -23,7 +27,8 @@ numeric keys will be returned. Hopefully a way will be found around this issue.
 ### PHP Objects
 
 PHP serializes it's objects with names.  Since these names are meaningless to
-Java they are discarded and the objects are treated as maps to be consistent with JSON behavior.
+Java they are discarded and the objects are treated as maps to be consistent
+with JSON behavior.  This leads to object serializtion being asymmetric.
 
 # Instalation
 
