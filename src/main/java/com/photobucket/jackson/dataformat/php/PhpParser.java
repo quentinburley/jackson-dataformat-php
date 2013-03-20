@@ -76,7 +76,6 @@ public class PhpParser extends ParserMinimalBase {
             _currToken = JsonToken.FIELD_NAME;
             return _currToken;
         }
-        
          
         return (_currToken = determineNextToken(i));
     }
@@ -100,6 +99,7 @@ public class PhpParser extends ParserMinimalBase {
                 break;
             case 's':
                 t = parseString();
+                consumeEOR();
                 break;
             case 'a':
                 if (!inObject) {
@@ -117,7 +117,17 @@ public class PhpParser extends ParserMinimalBase {
                 if (!inObject) {
                     _parsingContext = _parsingContext.createChildObjectContext(0, 0);
                 }
-                //readLength();
+                //the name of the object is the next value
+                //read it and discard it, since there is no equivalent JSON functionality
+                //and it would mean nothing in Java.
+                parseString();
+                consumeDELIM();
+                readLength(); //now read the length of the object itself
+                consumeDELIM();
+                i = _reader.read(); //now read the delimiter
+                if(i != INT_LCURLY) {
+                    _reportUnexpectedChar(i, INT_LCURLY);
+                }
                 t = JsonToken.START_OBJECT;
                 break;
             case 'N':
@@ -184,12 +194,24 @@ public class PhpParser extends ParserMinimalBase {
         if(ch != '"') {
             _reportUnexpectedChar(ch, '"');
         }
+        
+        return JsonToken.VALUE_STRING;
+    }
+
+    private void consumeEOR() throws IOException {
         //consume the field delimiter
-        ch = _reader.read();
+        int ch = _reader.read();
         if(ch != -1 && ch != EOR) {
             _reportUnexpectedChar(ch, EOR);
         }
-        return JsonToken.VALUE_STRING;
+    }
+
+    private void consumeDELIM() throws IOException {
+        //consume the field delimiter
+        int ch = _reader.read();
+        if(ch != -1 && ch != DELIM) {
+            _reportUnexpectedChar(ch, EOR);
+        }
     }
 
     private void readNextValue() throws IOException {
