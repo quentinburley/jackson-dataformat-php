@@ -25,14 +25,14 @@ public class PhpGenerator extends GeneratorBase {
 
     private static final String EOR = ";";
 
-    final protected Writer _writer;
+    final protected Writer writer;
 
     private PhpWriteContext _ctx;
     
     PhpGenerator(IOContext ctxt, ObjectCodec codec, Writer out) {
          super(0, codec);
-         _writer = out;
-         _ctx = PhpWriteContext.createRootContext(_writer);
+         writer = out;
+         _ctx = PhpWriteContext.createRootContext(writer);
     }
 
     /*
@@ -42,7 +42,7 @@ public class PhpGenerator extends GeneratorBase {
      */
     @Override
     public Object getOutputTarget() {
-        return _writer;
+        return writer;
     }
 
 
@@ -53,19 +53,17 @@ public class PhpGenerator extends GeneratorBase {
      */
 
     @Override
-    public void writeFieldName(String name)  throws IOException, JsonGenerationException
-    {
+    public void writeFieldName(String name)  throws IOException, JsonGenerationException {
         int status = _ctx.writeFieldName(name);
         if (status == JsonWriteContext.STATUS_EXPECT_VALUE) {
             _reportError("Can not write a field name, expecting a value");
         }
-        _writeString(name);
+        writeString(name);
     }
 
     @Override
     public void writeFieldName(SerializableString name)
-        throws IOException, JsonGenerationException
-    {
+        throws IOException, JsonGenerationException {
         writeFieldName(name.getValue());
     }
     
@@ -76,16 +74,14 @@ public class PhpGenerator extends GeneratorBase {
      */
 
     @Override
-    public void writeStartArray() throws IOException, JsonGenerationException
-    {
+    public void writeStartArray() throws IOException, JsonGenerationException {
         _verifyValueWrite("start an array");
         _ctx = _ctx.createChildArrayContext();
         //Can't actually write anything here because we need to know how many fields this array will have
     }
 
     @Override
-    public void writeEndArray() throws IOException, JsonGenerationException
-    {
+    public void writeEndArray() throws IOException, JsonGenerationException {
         if (!_ctx.inArray()) {
             _reportError("Current context not an ARRAY but "+_ctx.getTypeDesc());
         }
@@ -93,15 +89,13 @@ public class PhpGenerator extends GeneratorBase {
     }
 
     @Override
-    public void writeStartObject() throws IOException, JsonGenerationException
-    {
+    public void writeStartObject() throws IOException, JsonGenerationException {
         _ctx = _ctx.createChildObjectContext();
         //Can't actually write anything here because we need to know how many fields this array will have
     }
 
     @Override
-    public void writeEndObject() throws IOException, JsonGenerationException
-    {
+    public void writeEndObject() throws IOException, JsonGenerationException {
         if (!_ctx.inObject()) {
             _reportError("Current context not an object but "+_ctx.getTypeDesc());
         }
@@ -123,7 +117,7 @@ public class PhpGenerator extends GeneratorBase {
 
     @Override
     public void flush() throws IOException {
-        _writer.flush();
+        writer.flush();
     }
 
     @Override
@@ -143,12 +137,26 @@ public class PhpGenerator extends GeneratorBase {
 
     @Override
     public void writeString(String text) throws IOException, JsonGenerationException {
-        _writeString(text);
+        if(_ctx.inArray()) {
+            writeIndex(_ctx.getFieldCount());
+            _ctx.incrementFieldCount();
+        }
+        _ctx.append("s");
+        _ctx.append(DELIM);
+        _ctx.append(Integer.toString(text.length()));
+        _ctx.append(DELIM);
+        _ctx.append("\"");
+        _ctx.append(text);
+        _ctx.append("\"");
+        if(_ctx.inArray() || _ctx.inObject()) {
+            _ctx.append(EOR);
+        }
+        _ctx.writeValue();
     }
 
     @Override
     public void writeString(char[] text, int offset, int len) throws IOException, JsonGenerationException {
-        _writeString(new String(text).substring(offset, len));
+        writeString(new String(text).substring(offset, len));
     }
 
     @Override
@@ -159,20 +167,6 @@ public class PhpGenerator extends GeneratorBase {
     @Override
     public void writeUTF8String(byte[] text, int offset, int length) throws IOException, JsonGenerationException {
         throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    private void _writeString(String name) throws IOException {
-        _ctx.append("s");
-        _ctx.append(DELIM);
-        _ctx.append(Integer.toString(name.length()));
-        _ctx.append(DELIM);
-        _ctx.append("\"");
-        _ctx.append(name);
-        _ctx.append("\"");
-        if(_ctx.inArray() || _ctx.inObject()) {
-            _ctx.append(EOR);
-        }
-        _ctx.writeValue();
     }
 
     @Override
@@ -202,20 +196,24 @@ public class PhpGenerator extends GeneratorBase {
 
     @Override
     public void writeNumber(int v) throws IOException, JsonGenerationException {
-        _writeInt(v);
+        writeInt(v);
     }
 
     @Override
     public void writeNumber(long v) throws IOException, JsonGenerationException {
-        _writeInt(v);
+        writeInt(v);
     }
 
     @Override
     public void writeNumber(BigInteger v) throws IOException, JsonGenerationException {
-        _writeInt(v);
+        writeInt(v);
     }
 
-    private void _writeInt(Number v) throws IOException {
+    private void writeInt(Number v) throws IOException {
+        if(_ctx.inArray()) {
+            writeIndex(_ctx.getFieldCount());
+            _ctx.incrementFieldCount();
+        }
         _ctx.append("i");
         _ctx.append(DELIM);
         _ctx.append(v.toString());
@@ -225,22 +223,33 @@ public class PhpGenerator extends GeneratorBase {
         _ctx.writeValue();
     }
 
+    private void writeIndex(Integer i) throws IOException {
+        _ctx.append("i");
+        _ctx.append(DELIM);
+        _ctx.append(i.toString());
+        _ctx.append(EOR);
+    }
+
     @Override
     public void writeNumber(double d) throws IOException, JsonGenerationException {
-        _writeDouble(d);
+        writeDouble(d);
     }
 
     @Override
     public void writeNumber(float f) throws IOException, JsonGenerationException {
-        _writeDouble(f);
+        writeDouble(f);
     }
 
     @Override
     public void writeNumber(BigDecimal dec) throws IOException, JsonGenerationException {
-        _writeDouble(dec);
+        writeDouble(dec);
     }
 
-    private void _writeDouble(Number v) throws IOException {
+    private void writeDouble(Number v) throws IOException {
+        if(_ctx.inArray()) {
+            writeIndex(_ctx.getFieldCount());
+            _ctx.incrementFieldCount();
+        }
         _ctx.append("d");
         _ctx.append(DELIM);
         _ctx.append(v.toString());
@@ -257,6 +266,10 @@ public class PhpGenerator extends GeneratorBase {
 
     @Override
     public void writeBoolean(boolean state) throws IOException, JsonGenerationException {
+        if(_ctx.inArray()) {
+            writeIndex(_ctx.getFieldCount());
+            _ctx.incrementFieldCount();
+        }
         _ctx.append("b");
         _ctx.append(DELIM);
         _ctx.append(state ? "1" : "0");

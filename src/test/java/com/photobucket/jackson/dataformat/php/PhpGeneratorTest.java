@@ -33,7 +33,7 @@ public class PhpGeneratorTest extends TestCase {
     /**
      * Test of parsing Strings into primitives
      */
-    public void testParse_Primitives() throws Exception {
+    public void testSerialize_Primitives() throws Exception {
         String strVal = mapper.writeValueAsString("foobar");
         assertEquals("s:6:\"foobar\"", strVal);
 
@@ -46,30 +46,29 @@ public class PhpGeneratorTest extends TestCase {
         assertEquals("d:10.0", mapper.writeValueAsString(10.0));
     }
 
-    public void testParse_Map() throws Exception {
+    public void testSerialize_Map() throws Exception {
         HashMap map = new LinkedHashMap();
         map.put("key", 8);
         map.put("key2", "value");
         String result = mapper.writeValueAsString(map);
         assertEquals("a:2:{s:3:\"key\";i:8;s:4:\"key2\";s:5:\"value\";}", result);
-
-        /*
-        values = mapper.readValue("a:2:{i:0;s:5:\"value\";i:1;s:6:\"value2\";}", LinkedHashMap.class);
-        assertNotNull(values);
-        assertEquals(2, values.size());
-
-        values = mapper.readValue("a:2:{i:0;s:5:\"value\";i:1;a:2:{s:3:\"key\";i:8;s:4:\"key2\";s:5:\"value\";}}", LinkedHashMap.class);
-        assertNotNull(values);
-        assertEquals(2, values.size());*/
     }
 
-    public void testParse_Object() throws Exception {
-        /*
-        Map values = mapper.readValue("O:7:\"MyClass\":2:{s:3:\"foo\";i:10;s:3:\"bar\";i:20;}", HashMap.class);
-        assertNotNull(values);
-        assertEquals(2, values.keySet().size());
-        assertEquals(2, values.values().size());
-        assertEquals(10L, values.get("foo"));
-        assertEquals(20L, values.get("bar"));*/
+    public void testSerialize_Array() throws Exception {
+        List<String> list = new ArrayList<String>();
+        list.add("foo");
+        list.add("bar");
+        String result = mapper.writeValueAsString(list);
+        assertEquals("a:2:{i:0;s:3:\"foo\";i:1;s:3:\"bar\";}", result);
+    }
+
+    public void testSerialize_Object() throws Exception {
+        String result = mapper.writeValueAsString(new MyClass());
+        assertEquals("a:2:{s:3:\"foo\";s:3:\"baz\";s:3:\"bar\";i:10;}", result);       
+    }
+
+    private class MyClass {
+        public String foo = "baz";
+        public Integer bar = 10;
     }
 }
