@@ -60,3 +60,4 @@ User user = mapper.readValue(phpSource, User.class);
 #Contributors
 
 * Joshua Hollander
+* Stephan Wienczny
