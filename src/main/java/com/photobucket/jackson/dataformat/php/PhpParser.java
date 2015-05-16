@@ -3,17 +3,18 @@
  */
 package com.photobucket.jackson.dataformat.php;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 import com.fasterxml.jackson.core.*;
-import com.fasterxml.jackson.core.base.ParserBase;
 import com.fasterxml.jackson.core.base.ParserMinimalBase;
 import com.fasterxml.jackson.core.io.IOContext;
 import com.fasterxml.jackson.core.json.JsonReadContext;
 import com.fasterxml.jackson.core.util.BufferRecycler;
 import com.fasterxml.jackson.core.util.TextBuffer;
-import java.io.IOException;
-import java.io.Reader;
-import java.math.BigDecimal;
-import java.math.BigInteger;
+import com.photobucket.jackson.dataformat.php.cfg.PackageVersion;
 
 /**
  *
@@ -23,31 +24,23 @@ public class PhpParser extends ParserMinimalBase {
     private static final int DELIM = (int) ':';
 
     private static final int EOR = (int) ';';
-
+    private final IOContext _ioContext;
+    private final TextBuffer _textBuffer;
     /**
      * Need to keep track of underlying {@link Reader} to be able to auto-close it (if required to)
      */
     protected Reader _reader;
-
-    private String _currentValue;
-
     protected boolean _closed;
-
+    private String _currentValue;
     private boolean _assumeUTF8 = true;
-
     private ObjectCodec _objectCodec;
-
     private JsonReadContext _parsingContext;
-
-    private final IOContext _ioContext;
-
-    private final TextBuffer _textBuffer;
-
     private int _inputPtr = 0;
 
     private int _currInputRowStart = 0;
 
-    public PhpParser(IOContext ctxt, BufferRecycler recycler, int parserFeatures, ObjectCodec objectCodec, Reader reader) {
+    public PhpParser(final IOContext ctxt,final  BufferRecycler recycler, final int parserFeatures,
+                     final ObjectCodec objectCodec, final Reader reader) {
         _objectCodec = objectCodec;
         _reader = reader;
         _ioContext = ctxt;
@@ -80,7 +73,78 @@ public class PhpParser extends ParserMinimalBase {
         return (_currToken = determineNextToken(i));
     }
 
-    private void _reportUnexpectedChar(int got, int expected) throws JsonParseException {
+    @Override
+    protected void _handleEOF() throws JsonParseException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public String getCurrentName() throws IOException, JsonParseException {
+        if (_currToken == JsonToken.START_OBJECT || _currToken == JsonToken.START_ARRAY) {
+            JsonReadContext parent = _parsingContext.getParent();
+            return parent.getCurrentName();
+        }
+        return _parsingContext.getCurrentName();
+    }
+
+    @Override
+    public void close() throws IOException {
+        if (!_closed) {
+            _closed = true;
+            try {
+                _reader.close();
+            } finally {
+                _textBuffer.releaseBuffers();
+            }
+        }
+    }
+
+    @Override
+    public boolean isClosed() {
+        return _closed;
+    }
+
+    @Override
+    public JsonStreamContext getParsingContext() {
+        return _parsingContext;
+    }
+
+    @Override
+    public void overrideCurrentName(final String name) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public String getText() throws IOException, JsonParseException {
+        return _currentValue;
+    }
+
+    @Override
+    public char[] getTextCharacters() throws IOException, JsonParseException {
+        return _currentValue.toCharArray();
+    }
+
+    @Override
+    public boolean hasTextCharacters() {
+        return _currentValue != null && _currentValue.length() > 0;
+    }
+
+    @Override
+    public int getTextLength() throws IOException, JsonParseException {
+        return _currentValue.length();
+    }
+
+    @Override
+    public int getTextOffset() throws IOException, JsonParseException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public byte[] getBinaryValue(final Base64Variant bv) throws IOException, JsonParseException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    private void _reportUnexpectedChar(final int got, final int expected) throws JsonParseException {
         _reportError("Expected "+((char) expected)+" but got '"+((char) got)+"'");
     }
 
@@ -141,9 +205,9 @@ public class PhpParser extends ParserMinimalBase {
 
     /**
      * Reads the length of the next field if there is a length descriptor available
-     * 
+     *
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     private int readLength() throws IOException {
         int c = _reader.read();
@@ -194,7 +258,7 @@ public class PhpParser extends ParserMinimalBase {
         if(ch != '"') {
             _reportUnexpectedChar(ch, '"');
         }
-        
+
         return JsonToken.VALUE_STRING;
     }
 
@@ -250,31 +314,6 @@ public class PhpParser extends ParserMinimalBase {
     }
 
     @Override
-    public String getText() throws IOException, JsonParseException {
-        return _currentValue;
-    }
-
-    @Override
-    public char[] getTextCharacters() throws IOException, JsonParseException {
-        return _currentValue.toCharArray();
-    }
-
-    @Override
-    public int getTextLength() throws IOException, JsonParseException {
-        return _currentValue.length();
-    }
-
-    @Override
-    public int getTextOffset() throws IOException, JsonParseException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public byte[] getBinaryValue(Base64Variant bv) throws IOException, JsonParseException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
     public ObjectCodec getCodec() {
         return _objectCodec;
     }
@@ -285,54 +324,8 @@ public class PhpParser extends ParserMinimalBase {
     }
 
     @Override
-    public Object getEmbeddedObject() throws IOException, JsonParseException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    protected void _handleEOF() throws JsonParseException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public String getCurrentName() throws IOException, JsonParseException {
-        if (_currToken == JsonToken.START_OBJECT || _currToken == JsonToken.START_ARRAY) {
-            JsonReadContext parent = _parsingContext.getParent();
-            return parent.getCurrentName();
-        }
-        return _parsingContext.getCurrentName();
-    }
-
-    @Override
-    public void close() throws IOException {
-        if (!_closed) {
-            _closed = true;
-            try {
-                _reader.close();
-            } finally {
-                _textBuffer.releaseBuffers();
-            }
-        }
-    }
-
-    @Override
-    public boolean isClosed() {
-        return _closed;
-    }
-
-    @Override
-    public JsonStreamContext getParsingContext() {
-        return _parsingContext;
-    }
-
-    @Override
-    public void overrideCurrentName(String name) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public boolean hasTextCharacters() {
-        return _currentValue != null && _currentValue.length() > 0;
+    public Version version() {
+        return PackageVersion.VERSION;
     }
 
     @Override
@@ -395,6 +388,11 @@ public class PhpParser extends ParserMinimalBase {
     @Override
     public BigDecimal getDecimalValue() throws IOException, JsonParseException {
         return new BigDecimal(_currentValue);
+    }
+
+    @Override
+    public Object getEmbeddedObject() throws IOException, JsonParseException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override

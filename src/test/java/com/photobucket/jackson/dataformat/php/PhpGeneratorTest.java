@@ -3,9 +3,13 @@
  */
 package com.photobucket.jackson.dataformat.php;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import java.util.*;
+
 import junit.framework.TestCase;
 
 /**
@@ -15,7 +19,7 @@ import junit.framework.TestCase;
 public class PhpGeneratorTest extends TestCase {
     ObjectMapper mapper;
 
-    public PhpGeneratorTest(String testName) {
+    public PhpGeneratorTest(final String testName) {
         super(testName);
         mapper = new ObjectMapper(new PhpFactory());
     }

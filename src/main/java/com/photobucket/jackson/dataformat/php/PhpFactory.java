@@ -3,6 +3,9 @@
  */
 package com.photobucket.jackson.dataformat.php;
 
+import java.io.*;
+import java.net.URL;
+
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -10,8 +13,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.format.InputAccessor;
 import com.fasterxml.jackson.core.format.MatchStrength;
 import com.fasterxml.jackson.core.io.IOContext;
-import java.io.*;
-import java.net.URL;
 
 /**
  *
@@ -33,11 +34,10 @@ public class PhpFactory extends JsonFactory {
      * Sub-classes need to override this method (as of 1.8)
      */
     @Override
-    public MatchStrength hasFormat(InputAccessor acc) throws IOException {
+    public MatchStrength hasFormat(final InputAccessor acc) throws IOException {
         //TODO: make this correct
         return MatchStrength.FULL_MATCH;
     }
-    
     
     /*
     /**********************************************************
@@ -46,52 +46,52 @@ public class PhpFactory extends JsonFactory {
      */
 
     @Override
-    public PhpParser createParser(InputStream in)
-        throws IOException, JsonParseException
-    {
-        return _createParser(in, _createContext(in, false));
-    }
-
-    @Override
-    public JsonParser createParser(Reader r)
-        throws IOException, JsonParseException
-    {
-        return _createParser(r, _createContext(r, false));
-    }
-    
-    @Override
-    public PhpParser createParser(File f)
+    public PhpParser createParser(final File f)
         throws IOException, JsonParseException
     {
         return _createParser(new FileInputStream(f), _createContext(f, true));
     }
 
     @Override
-    public PhpParser createParser(URL url)
+    public PhpParser createParser(final URL url)
         throws IOException, JsonParseException
     {
         return _createParser(_optimizedStreamFromURL(url), _createContext(url, true));
     }
-
-    @Override
-    public PhpParser createParser(String doc)
-        throws IOException, JsonParseException
-    {
-        return _createParser(new StringReader(doc), _createContext(doc, true));
-    }
     
     @Override
-    public PhpParser createParser(byte[] data)
+    public PhpParser createParser(final InputStream in)
+        throws IOException, JsonParseException
+    {
+        return _createParser(in, _createContext(in, false));
+    }
+
+    @Override
+    public JsonParser createParser(final Reader r)
+        throws IOException, JsonParseException
+    {
+        return _createParser(r, _createContext(r, false));
+    }
+
+    @Override
+    public PhpParser createParser(final byte[] data)
         throws IOException, JsonParseException
     {
         return _createParser(data, 0, data.length, _createContext(data, true));
     }
     
     @Override
-    public PhpParser createParser(byte[] data, int offset, int len)
+    public PhpParser createParser(final byte[] data, final int offset, final int len)
         throws IOException, JsonParseException
     {
         return _createParser(data, offset, len, _createContext(data, true));
+    }
+    
+    @Override
+    public PhpParser createParser(final String doc)
+        throws IOException, JsonParseException
+    {
+        return _createParser(new StringReader(doc), _createContext(doc, true));
     }
     
     /*
@@ -101,42 +101,42 @@ public class PhpFactory extends JsonFactory {
      */
     
     @Override
-    public PhpParser createJsonParser(File f)
+    public PhpParser createJsonParser(final File f)
         throws IOException, JsonParseException
     {
         return _createParser(new FileInputStream(f), _createContext(f, true));
     }
 
     @Override
-    public PhpParser createJsonParser(URL url)
+    public PhpParser createJsonParser(final URL url)
         throws IOException, JsonParseException
     {
         return _createParser(_optimizedStreamFromURL(url), _createContext(url, true));
     }
 
     @Override
-    public PhpParser createJsonParser(InputStream in)
+    public PhpParser createJsonParser(final InputStream in)
         throws IOException, JsonParseException
     {
         return _createParser(in, _createContext(in, false));
     }
 
     @Override
-    public JsonParser createJsonParser(Reader r)
+    public JsonParser createJsonParser(final Reader r)
         throws IOException, JsonParseException
     {
         return _createParser(r, _createContext(r, false));
     }
     
     @Override
-    public PhpParser createJsonParser(byte[] data)
+    public PhpParser createJsonParser(final byte[] data)
         throws IOException, JsonParseException
     {
         return _createParser(data, 0, data.length, _createContext(data, true));
     }
     
     @Override
-    public PhpParser createJsonParser(byte[] data, int offset, int len)
+    public PhpParser createJsonParser(final byte[] data, final int offset, final int len)
         throws IOException, JsonParseException
     {
         return _createParser(data, offset, len, _createContext(data, true));
@@ -153,7 +153,7 @@ public class PhpFactory extends JsonFactory {
      * note: co-variant return type
      */
     @Override
-    public PhpGenerator createJsonGenerator(OutputStream out, JsonEncoding enc)
+    public PhpGenerator createJsonGenerator(final OutputStream out, final JsonEncoding enc)
         throws IOException
     {
         return createJsonGenerator(out);
@@ -163,7 +163,7 @@ public class PhpFactory extends JsonFactory {
      * This method assumes use of UTF-8 for encoding.
      */
     @Override
-    public PhpGenerator createJsonGenerator(OutputStream out) throws IOException
+    public PhpGenerator createJsonGenerator(final OutputStream out) throws IOException
     {
         // false -> we won't manage the stream unless explicitly directed to
         IOContext ctxt = _createContext(out, false);
@@ -183,7 +183,7 @@ public class PhpFactory extends JsonFactory {
      * parser.
      */
     @Override
-    protected PhpParser _createParser(InputStream in, IOContext ctxt)
+    protected PhpParser _createParser(final InputStream in, final IOContext ctxt)
         throws IOException, JsonParseException
     {
         Reader r = _createReader(in, null, ctxt);
@@ -195,7 +195,7 @@ public class PhpFactory extends JsonFactory {
      * parser.
      */
     @Override
-    protected PhpParser _createParser(Reader r, IOContext ctxt)
+    protected PhpParser _createParser(final Reader r, final IOContext ctxt)
         throws IOException, JsonParseException
     {
         return new PhpParser(ctxt, _getBufferRecycler(), _parserFeatures, _objectCodec, r);
@@ -206,7 +206,8 @@ public class PhpFactory extends JsonFactory {
      * parser.
      */
     @Override
-    protected PhpParser _createParser(byte[] data, int offset, int len, IOContext ctxt)
+    protected PhpParser _createParser(final byte[] data, final int offset, final int len,
+                                      final IOContext ctxt)
         throws IOException, JsonParseException
     {
         Reader r = _createReader(data, offset, len, null, ctxt);
@@ -218,14 +219,15 @@ public class PhpFactory extends JsonFactory {
      * generator.
      */
     @Override
-    protected PhpGenerator _createGenerator(Writer out, IOContext ctxt)
+    protected PhpGenerator _createGenerator(final Writer out, final IOContext ctxt)
         throws IOException
     {
         return _createGenerator(ctxt, out);
     }
 
     @Override
-    protected Writer _createWriter(OutputStream out, JsonEncoding enc, IOContext ctxt) throws IOException
+    protected Writer _createWriter(final OutputStream out, final JsonEncoding enc,
+                                   final IOContext ctxt) throws IOException
     {
         return new OutputStreamWriter(out, enc.getJavaName());
     }
@@ -236,7 +238,7 @@ public class PhpFactory extends JsonFactory {
     /**********************************************************
      */
     
-    protected PhpGenerator _createGenerator(IOContext ctxt, Writer out)
+    protected PhpGenerator _createGenerator(final IOContext ctxt, final Writer out)
         throws IOException
     {
         PhpGenerator gen = new PhpGenerator(ctxt, _objectCodec, out);
@@ -246,15 +248,16 @@ public class PhpFactory extends JsonFactory {
 
 //    protected final Charset UTF8 = Charset.forName("UTF-8");
     
-    protected Reader _createReader(InputStream in, JsonEncoding enc, IOContext ctxt) throws IOException
-    {
-        return new InputStreamReader(in, enc.getJavaName());
-    }
-
-    protected Reader _createReader(byte[] data, int offset, int len,
+    protected Reader _createReader(final byte[] data, final int offset, final int len,
             JsonEncoding enc, IOContext ctxt) throws IOException
     {
         ByteArrayInputStream in = new ByteArrayInputStream(data, offset, len);
+        return new InputStreamReader(in, enc.getJavaName());
+    }
+
+    protected Reader _createReader(final InputStream in, final JsonEncoding enc,
+                                   final IOContext ctxt) throws IOException
+    {
         return new InputStreamReader(in, enc.getJavaName());
     }
 }

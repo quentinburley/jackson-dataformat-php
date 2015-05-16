@@ -3,8 +3,6 @@
  */
 package com.photobucket.jackson.dataformat.php;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import junit.framework.TestCase;
 
 /**

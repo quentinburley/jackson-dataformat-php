@@ -3,10 +3,12 @@
  */
 package com.photobucket.jackson.dataformat.php;
 
-import com.fasterxml.jackson.core.json.JsonWriteContext;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.json.JsonWriteContext;
 
 /**
  * Decorator around the JsonWriteContext object because it has a bunch of final methods that 
@@ -25,7 +27,8 @@ public class PhpWriteContext {
 
     private Writer _writer;
 
-    protected PhpWriteContext(JsonWriteContext jsonContext, PhpWriteContext parent, Writer writer) {
+    protected PhpWriteContext(final JsonWriteContext jsonContext, final PhpWriteContext parent,
+                              final Writer writer) {
         _jsonCtx = jsonContext;
         _parent = parent;
         _writer = writer;
@@ -34,7 +37,7 @@ public class PhpWriteContext {
         }
     } 
 
-    public static PhpWriteContext createRootContext(Writer writer) {
+    public static PhpWriteContext createRootContext(final Writer writer) {
         return new PhpWriteContext(JsonWriteContext.createRootContext(), null, writer);
     }
 
@@ -67,7 +70,7 @@ public class PhpWriteContext {
 
     public final String getCurrentName() { return _jsonCtx.getCurrentName(); }
 
-    public final int writeFieldName(String name) {
+    public final int writeFieldName(final String name) throws JsonProcessingException {
         _fieldCount++;
         return _jsonCtx.writeFieldName(name);
     }
@@ -84,7 +87,7 @@ public class PhpWriteContext {
         return _writer;
     }
 
-    public void append(CharSequence string) throws IOException {
+    public void append(final CharSequence string) throws IOException {
         _writer.append(string);
     }
 

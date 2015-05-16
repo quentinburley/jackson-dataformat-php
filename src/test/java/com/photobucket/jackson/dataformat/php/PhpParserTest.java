@@ -3,9 +3,12 @@
  */
 package com.photobucket.jackson.dataformat.php;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import java.util.*;
+
 import junit.framework.TestCase;
 
 /**
