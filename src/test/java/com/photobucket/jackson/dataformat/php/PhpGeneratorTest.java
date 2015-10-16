@@ -3,10 +3,7 @@
  */
 package com.photobucket.jackson.dataformat.php;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -51,7 +48,7 @@ public class PhpGeneratorTest extends TestCase {
     }
 
     public void testSerialize_Map() throws Exception {
-        HashMap map = new LinkedHashMap();
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
         map.put("key", 8);
         map.put("key2", "value");
         String result = mapper.writeValueAsString(map);

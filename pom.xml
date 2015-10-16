@@ -27,7 +27,7 @@
     <parent>
         <groupId>com.fasterxml.jackson</groupId>
         <artifactId>jackson-parent</artifactId>
-        <version>2.5.1</version>
+        <version>2.6.2</version>
     </parent>
 
     <properties>
@@ -38,13 +38,9 @@
         <osgi.import>
             com.fasterxml.jackson.core,
             com.fasterxml.jackson.core.base,
-#            com.fasterxml.jackson.core.format,
             com.fasterxml.jackson.core.json,
             com.fasterxml.jackson.core.io,
             com.fasterxml.jackson.core.util,
-#            com.fasterxml.jackson.core.type,
-#            org.xml.sax,org.w3c.dom, org.w3c.dom.bootstrap, org.w3c.dom.ls,
-#            javax.xml.datatype, javax.xml.namespace, javax.xml.parsers
         </osgi.import>
 
         <!-- Generate PackageVersion.java into this directory. -->
@@ -56,13 +52,13 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.5.2</version>
+            <version>2.6.2</version>
         </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.5.2</version>
+            <version>2.6.2</version>
         </dependency>
 
         <dependency>

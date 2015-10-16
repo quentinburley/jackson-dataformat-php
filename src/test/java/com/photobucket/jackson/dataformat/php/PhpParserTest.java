@@ -73,13 +73,14 @@ public class PhpParserTest extends TestCase {
         assertNotNull(values);
         assertEquals(2, values.size());
 
-        values = mapper.readValue("a:2:{i:0;s:5:\"value\";i:1;a:2:{s:3:\"key\";i:8;s:4:\"key2\";s:5:\"value\";}}", LinkedHashMap.class);
+        values = mapper.readValue("a:2:{i:0;s:5:\"value\";i:1;a:2:{s:3:\"key\";i:8;s:4:\"key2\";s:5:\"value\";}}",
+                LinkedHashMap.class);
         assertNotNull(values);
         assertEquals(2, values.size());
     }
 
     public void testParse_Object() throws Exception {
-        Map values = mapper.readValue("O:7:\"MyClass\":2:{s:3:\"foo\";i:10;s:3:\"bar\";i:20;}", HashMap.class);
+        final Map values = mapper.readValue("O:7:\"MyClass\":2:{s:3:\"foo\";i:10;s:3:\"bar\";i:20;}", HashMap.class);
         assertNotNull(values);
         assertEquals(2, values.keySet().size());
         assertEquals(2, values.values().size());
