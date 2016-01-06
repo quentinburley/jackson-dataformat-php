@@ -38,7 +38,7 @@ public class PhpWriteContext {
     } 
 
     public static PhpWriteContext createRootContext(final Writer writer) {
-        return new PhpWriteContext(JsonWriteContext.createRootContext(), null, writer);
+        return new PhpWriteContext(JsonWriteContext.createRootContext(null), null, writer);
     }
 
     public final PhpWriteContext createChildArrayContext()

@@ -11,6 +11,7 @@ import java.math.BigInteger;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.core.base.ParserMinimalBase;
 import com.fasterxml.jackson.core.io.IOContext;
+import com.fasterxml.jackson.core.json.DupDetector;
 import com.fasterxml.jackson.core.json.JsonReadContext;
 import com.fasterxml.jackson.core.util.BufferRecycler;
 import com.fasterxml.jackson.core.util.TextBuffer;
@@ -45,7 +46,7 @@ public class PhpParser extends ParserMinimalBase {
         _reader = reader;
         _ioContext = ctxt;
         _textBuffer = ctxt.constructTextBuffer();
-        _parsingContext = JsonReadContext.createRootContext();
+        _parsingContext = JsonReadContext.createRootContext(null);
     }
 
     @Override
