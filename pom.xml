@@ -18,7 +18,7 @@
 
     <groupId>com.fasterxml.jackson</groupId>
     <artifactId>jackson-dataformat-php</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
     <name>jackson-dataformat-php</name>
     <url>http://maven.apache.org</url>
@@ -49,7 +49,7 @@
         <url>https://github.com/wienczny/jackson-dataformat-php</url>
         <connection>scm:git:git://github.com/wienczny/jackson-dataformat-php.git</connection>
         <developerConnection>scm:git:git@github.com:wienczny/jackson-dataformat-php.git</developerConnection>
-        <tag>jackson-dataformat-php-1.0.0</tag>
+        <tag>jackson-dataformat-php-1.0.1</tag>
     </scm>
 
     <properties>
