@@ -18,7 +18,7 @@
 
     <groupId>com.fasterxml.jackson</groupId>
     <artifactId>jackson-dataformat-php</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     <name>jackson-dataformat-php</name>
     <url>http://maven.apache.org</url>
@@ -54,8 +54,8 @@
 
     <properties>
         <osgi.export>
-            com.photobucket.jackson.dataformat.php,
-            com.photobucket.jackson.dataformat.php.cfg
+            com.fasterxml.jackson.dataformat.php,
+            com.fasterxml.jackson.dataformat.php.cfg
         </osgi.export>
         <osgi.import>
             com.fasterxml.jackson.core,
@@ -66,8 +66,8 @@
         </osgi.import>
 
         <!-- Generate PackageVersion.java into this directory. -->
-        <packageVersion.dir>com/photobucket/jackson/dataformat/php/cfg</packageVersion.dir>
-        <packageVersion.package>com.photobucket.jackson.dataformat.php.cfg</packageVersion.package>
+        <packageVersion.dir>com/fasterxml/jackson/dataformat/php/cfg</packageVersion.dir>
+        <packageVersion.package>com.fasterxml.jackson.dataformat.php.cfg</packageVersion.package>
     </properties>
 
     <dependencies>
