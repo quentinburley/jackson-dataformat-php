@@ -18,7 +18,8 @@ import com.fasterxml.jackson.core.json.JsonWriteContext;
 
 /**
  *
- * @author Joshua Hollander <jhollander@photobucket.com>
+ * @author Joshua Hollander
+ * @author Stephan Wienczny
  */
 public class PhpGenerator extends GeneratorBase {
     private static final String DELIM = ":";

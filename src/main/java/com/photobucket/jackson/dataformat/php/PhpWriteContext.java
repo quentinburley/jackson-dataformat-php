@@ -13,8 +13,9 @@ import com.fasterxml.jackson.core.json.JsonWriteContext;
 /**
  * Decorator around the JsonWriteContext object because it has a bunch of final methods that 
  * needed to have functionality added to them.
- * 
- * @author jhollander
+ *
+ * @author Joshua Hollander
+ * @author Stephan Wienczny
  */
 public class PhpWriteContext {
     private JsonWriteContext _jsonCtx;

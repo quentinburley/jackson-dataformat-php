@@ -11,7 +11,8 @@ import junit.framework.TestCase;
 
 /**
  *
- * @author Joshua Hollander <jhollander@photobucket.com>
+ * @author Joshua Hollander
+ * @author Stephan Wienczny
  */
 public class PhpGeneratorTest extends TestCase {
     ObjectMapper mapper;

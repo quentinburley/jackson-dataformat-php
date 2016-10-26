@@ -16,7 +16,8 @@ import com.fasterxml.jackson.core.io.IOContext;
 
 /**
  *
- * @author Joshua Hollander <jhollander@photobucket.com>
+ * @author Joshua Hollander
+ * @author Stephan Wienczny
  */
 public class PhpFactory extends JsonFactory {
     /**

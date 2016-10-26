@@ -19,7 +19,8 @@ import com.photobucket.jackson.dataformat.php.cfg.PackageVersion;
 
 /**
  *
- * @author Joshua Hollander <jhollander@photobucket.com>
+ * @author Joshua Hollander
+ * @author Stephan Wienczny
  */
 public class PhpParser extends ParserMinimalBase {
     private static final int DELIM = (int) ':';
