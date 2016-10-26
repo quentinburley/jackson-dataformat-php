@@ -1,7 +1,7 @@
 /*
  * Copyright 2012 Photobucket 
  */
-package com.photobucket.jackson.dataformat.php;
+package com.fasterxml.jackson.dataformat.php;
 
 import java.io.IOException;
 import java.io.StringWriter;

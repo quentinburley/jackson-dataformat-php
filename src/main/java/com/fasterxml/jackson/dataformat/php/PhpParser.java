@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Photobucket 
  */
-package com.photobucket.jackson.dataformat.php;
+package com.fasterxml.jackson.dataformat.php;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -11,11 +11,10 @@ import java.math.BigInteger;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.core.base.ParserMinimalBase;
 import com.fasterxml.jackson.core.io.IOContext;
-import com.fasterxml.jackson.core.json.DupDetector;
 import com.fasterxml.jackson.core.json.JsonReadContext;
 import com.fasterxml.jackson.core.util.BufferRecycler;
 import com.fasterxml.jackson.core.util.TextBuffer;
-import com.photobucket.jackson.dataformat.php.cfg.PackageVersion;
+import com.fasterxml.jackson.dataformat.php.cfg.PackageVersion;
 
 /**
  *

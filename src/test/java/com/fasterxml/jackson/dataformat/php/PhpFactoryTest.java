@@ -1,7 +1,7 @@
 /*
  * Copyright 2013 Photobucket 
  */
-package com.photobucket.jackson.dataformat.php;
+package com.fasterxml.jackson.dataformat.php;
 
 import junit.framework.TestCase;
 
