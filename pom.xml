@@ -40,6 +40,18 @@
         </developer>
     </developers>
 
+    <issueManagement>
+        <url>https://github.com/wienczny/jackson-dataformat-php/issues</url>
+        <system>GitHub Issues</system>
+    </issueManagement>
+
+    <scm>
+        <url>https://github.com/wienczny/jackson-dataformat-php</url>
+        <connection>scm:git:git://github.com/wienczny/jackson-dataformat-php.git</connection>
+        <developerConnection>scm:git:git@github.com:wienczny/jackson-dataformat-php.git</developerConnection>
+        <tag>jackson-dataformat-php-1.0.0</tag>
+    </scm>
+
     <properties>
         <osgi.export>
             com.photobucket.jackson.dataformat.php,
@@ -118,7 +130,4 @@
         </profile>
     </profiles>
 
-  <scm>
-    <tag>jackson-dataformat-php-1.0.0</tag>
-  </scm>
 </project>
