@@ -70,6 +70,13 @@
         <packageVersion.package>com.fasterxml.jackson.dataformat.php.cfg</packageVersion.package>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>pdrone.1c76613f-9dfc-4919-839c-38c121ddd89f</id>
+            <url>http://repository:8080/maven/1c76613f-9dfc-4919-839c-38c121ddd89f</url>
+        </repository>
+    </distributionManagement>
+
     <dependencies>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -109,6 +116,32 @@
                     <execution>
                         <id>process-packageVersion</id>
                         <phase>process-sources</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.4</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
