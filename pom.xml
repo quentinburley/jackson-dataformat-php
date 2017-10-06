@@ -22,7 +22,7 @@
     </parent>
     <groupId>com.fasterxml.jackson.dataformat</groupId>
     <artifactId>jackson-dataformat-php</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1</version>
     <packaging>bundle</packaging>
     <name>jackson-dataformat-php</name>
     <description>Support desearializing PHP's serialize encoded objects</description>
@@ -48,7 +48,7 @@
         <url>https://github.com/wienczny/jackson-dataformat-php</url>
         <connection>scm:git:git://github.com/wienczny/jackson-dataformat-php.git</connection>
         <developerConnection>scm:git:git@github.com:wienczny/jackson-dataformat-php.git</developerConnection>
-        <tag>jackson-dataformat-php-1.1.0</tag>
+        <tag>jackson-dataformat-php-1.1.1</tag>
     </scm>
 
     <properties>
