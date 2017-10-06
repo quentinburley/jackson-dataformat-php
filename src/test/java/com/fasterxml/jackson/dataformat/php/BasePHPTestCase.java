@@ -5,16 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * {@link junit.framework.TestCase} for PHP data format.
  */
-public abstract class BaseTestForPHP extends junit.framework.TestCase {
+public abstract class BasePHPTestCase extends junit.framework.TestCase {
   private PhpFactory phpFactory;
   private ObjectMapper mapper;
 
-  public BaseTestForPHP() {
+  public BasePHPTestCase() {
     super();
     loadMapper();
   }
 
-  public BaseTestForPHP(final String name) {
+  public BasePHPTestCase(final String name) {
     super(name);
     loadMapper();
   }

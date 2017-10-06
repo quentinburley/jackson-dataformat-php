@@ -24,7 +24,7 @@ public class PhpFactory extends JsonFactory {
      * Name used to identify Php format.
      * (and returned by {@link #getFormatName()}
      */
-    public final static String FORMAT_NAME_PHP = "PHP";    
+    public final static String FORMAT_NAME_PHP = "PHP";
 
      @Override
     public String getFormatName() {

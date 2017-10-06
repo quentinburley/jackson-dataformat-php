@@ -197,6 +197,7 @@ public class PhpParser extends ParserMinimalBase {
                 break;
             case 'N':
                 t = JsonToken.VALUE_NULL;
+                consumeEOR();
                 break;
             default:
                 _reportError("Unknown type: '"+((char) i)+"'");
