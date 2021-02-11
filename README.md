@@ -61,3 +61,4 @@ User user = mapper.readValue(phpSource, User.class);
 
 * Joshua Hollander
 * Stephan Wienczny
+* Quentin Burley
